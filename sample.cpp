@@ -1,7 +1,7 @@
 #include <msa.h>
 #include "dumpVector.hpp"
 
-const unsigned int endianCheck[] = {0x1234567, 0x89abcdef01, 0xacacacac, 0x559f559f};
+const unsigned int endianCheck[] = {0x1234567, 0x89abcdef, 0xacacacac, 0x559f559f};
 const short src1[] = {1, 2, 3, 4, 5, 6, 7, 8, };
 const short src2[] = {100, 100, 100, 100, 100, 100, 100, 100,};
 short dst[] = {0, 0, 0, 0, 0, 0, 0, 0, };
@@ -17,7 +17,7 @@ int main(int argc, char**argv)
 	v16u8 v_endianChar = (v16u8)v_endian;
 	dumpVector(v_endianChar);
 
-	v_endianChar = v_endianChar << 3;
+	v_endianChar = __msa_slli_b(v_endianChar, 3);
 	dumpVector(v_endianChar);
 
 	unsigned char* foo = (unsigned char*)src1;
