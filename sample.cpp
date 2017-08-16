@@ -15,11 +15,11 @@ int main(int argc, char**argv)
 	v16i8 v_src1 = (v16i8)__msa_ld_h((void*)src1, 0);
 	v16i8 v_src2 = (v16i8)__msa_ld_h((void*)src2, 0);
 
-	dumpVector<v16i8, short>(v_src1);
+	dumpVector(v_src1);
 
 	v16i8 v_dst = v_src1 + v_src2;
 
-	dumpVector<v16i8, short>(v_dst);
+	dumpVector(v_dst);
 
 	return 0;
 }

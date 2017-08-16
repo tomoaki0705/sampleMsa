@@ -14,16 +14,16 @@ int main(int argc, char**argv)
 	volatile v2i64 v_src7 = (v2i64)__msa_fill_d(0);
 	volatile v2u64 v_src8 = (v2u64)__msa_fill_d(0);
 	volatile v2f64 v_src9 = (v2f64)__msa_fill_d(0);
-	dumpVector<v16i8, char>(v_src0);
-	dumpVector<v16u8, unsigned char>(v_src1);
-	dumpVector<v8i16, short>(v_src2);
-	dumpVector<v8u16, unsigned short>(v_src3);
-	dumpVector<v4i32, int>(v_src4);
-	dumpVector<v4u32, unsigned>(v_src5);
-	dumpVector<v4f32, float>(v_src6);
-	dumpVector<v2i64, long long int>(v_src7);
-	dumpVector<v2u64, unsigned long long>(v_src8);
-	dumpVector<v2f64, double>(v_src9);
+	dumpVector(v_src0);
+	dumpVector(v_src1);
+	dumpVector(v_src2);
+	dumpVector(v_src3);
+	dumpVector(v_src4);
+	dumpVector(v_src5);
+	dumpVector(v_src6);
+	dumpVector(v_src7);
+	dumpVector(v_src8);
+	dumpVector(v_src9);
 
 	std::cout << "example of filling value" << std::endl;
 	volatile v16i8 v_src00 = (v16i8)__msa_fill_b(-1);
@@ -36,16 +36,16 @@ int main(int argc, char**argv)
 	volatile v2i64 v_src07 = (v2i64)__msa_fill_d(-1);
 	volatile v2u64 v_src08 = (v2u64)__msa_fill_d(0x8000000000000000);
 	volatile v2f64 v_src09 = (v2f64)__msa_fill_d(0x3ff0000000000000);
-	dumpVector<v16i8, char>(v_src00);
-	dumpVector<v16u8, unsigned char>(v_src01);
-	dumpVector<v8i16, short>(v_src02);
-	dumpVector<v8u16, unsigned short>(v_src03);
-	dumpVector<v4i32, int>(v_src04);
-	dumpVector<v4u32, unsigned>(v_src05);
-	dumpVector<v4f32, float>(v_src06);
-	dumpVector<v2i64, long long int>(v_src07);
-	dumpVector<v2u64, unsigned long long>(v_src08);
-	dumpVector<v2f64, double>(v_src09);
+	dumpVector(v_src00);
+	dumpVector(v_src01);
+	dumpVector(v_src02);
+	dumpVector(v_src03);
+	dumpVector(v_src04);
+	dumpVector(v_src05);
+	dumpVector(v_src06);
+	dumpVector(v_src07);
+	dumpVector(v_src08);
+	dumpVector(v_src09);
 
 	return 0;
 }
