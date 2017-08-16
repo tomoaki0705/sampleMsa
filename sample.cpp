@@ -12,7 +12,7 @@ int main(int argc, char**argv)
 	std::cout << std::hex << "0x" << endianCheck[1] << std::endl;
 	std::cout << std::hex << "0x" << endianCheck[2] << std::endl;
 	std::cout << std::hex << "0x" << endianCheck[3] << std::endl;
-	v4u32 v_endian = __msa_ld_w((void*)endianCheck, 0);
+	v4u32 v_endian = (v4u32)__msa_ld_w((void*)endianCheck, 0);
 	dumpVector(v_endian);
 	v16u8 v_endianChar = (v16u8)v_endian;
 	dumpVector(v_endianChar);
