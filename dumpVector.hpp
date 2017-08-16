@@ -30,7 +30,7 @@ void dumpVector(vec a)                     \
 	}                                      \
 }
 
-#define DUMP_VECTOR_FLOATING(vec0,vec1,type,suffix)\
+#define DUMP_VECTOR_HEX(vec0,vec1,type,suffix)\
 void dumpVector(vec0 a)                    \
 {                                          \
 	unsigned char stub[16];                \
@@ -44,15 +44,15 @@ void dumpVector(vec0 a)                    \
 	}                                      \
 }
 
-DUMP_VECTOR(v8i16,v8i16,short,h);
-DUMP_VECTOR(v8u16,v8i16,unsigned short,h);
-DUMP_VECTOR(v4i32,v4i32,int,w);
-DUMP_VECTOR(v4u32,v4i32,unsigned,w);
-DUMP_VECTOR(v2i64,v2i64,long long,d);
-DUMP_VECTOR(v2u64,v2i64,unsigned long long,d);
+DUMP_VECTOR_HEX(v8i16,v8i16,short,h);
+DUMP_VECTOR_HEX(v8u16,v8i16,unsigned short,h);
+DUMP_VECTOR_HEX(v4i32,v4i32,int,w);
+DUMP_VECTOR_HEX(v4u32,v4i32,unsigned,w);
+DUMP_VECTOR_HEX(v2i64,v2i64,long long,d);
+DUMP_VECTOR_HEX(v2u64,v2i64,unsigned long long,d);
 
 DUMP_VECTOR_CHAR(v16i8,char);
 DUMP_VECTOR_CHAR(v16u8,unsigned char);
 
-DUMP_VECTOR_FLOATING(v4f32,v4i32,int,w);
-DUMP_VECTOR_FLOATING(v2f64,v2i64,long long,d);
+DUMP_VECTOR_HEX(v4f32,v4i32,int,w);
+DUMP_VECTOR_HEX(v2f64,v2i64,long long,d);
