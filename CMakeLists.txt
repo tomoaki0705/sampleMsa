@@ -7,6 +7,7 @@ project(msaSample)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=mips32r5 -mmsa")
 
 # make executable from source file
+add_executable(msaSample               sample.cpp)
 add_executable(msaSample01HelloWorld   sample01.cpp)
 add_executable(msaSample02LoadAndStore sample02.cpp)
 add_executable(msaSample03HalfConvert  sample03.cpp)
