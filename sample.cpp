@@ -10,7 +10,7 @@ short dst[] = {0, 0, 0, 0, 0, 0, 0, 0, };
 
 v8i16 v_pack(const v4i32& a, const v4i32& b)
 {
-	return __msa_pckev_h((v8i16)a. (v8i16)b);
+	return __msa_pckev_h((v8i16)a, (v8i16)b);
 }
 
 int main(int argc, char**argv)
