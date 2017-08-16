@@ -2,7 +2,7 @@
 #include <iostream>
 #include <iomanip>
 
-#define DEFAULT_DUMP_16(suffix,vec) \
+#define DEFAULT_DUMP_16(vec) \
 	std::cout << "0: 0x" << std::hex << __msa_copy_u_b(vec,0) << std::endl; \
 	std::cout << "1: 0x" << std::hex << __msa_copy_u_b(vec,1) << std::endl; \
 	std::cout << "2: 0x" << std::hex << __msa_copy_u_b(vec,2) << std::endl; \
@@ -20,7 +20,7 @@
 	std::cout << "14: 0x" << std::hex << __msa_copy_u_b(vec,14) << std::endl; \
 	std::cout << "15: 0x" << std::hex << __msa_copy_u_b(vec,15) << std::endl;
 
-#define DEFAULT_DUMP_8(suffix,vec) \
+#define DEFAULT_DUMP_8(vec) \
 	std::cout << "0: 0x" << std::hex << __msa_copy_u_h(vec,0) << std::endl; \
 	std::cout << "1: 0x" << std::hex << __msa_copy_u_h(vec,1) << std::endl; \
 	std::cout << "2: 0x" << std::hex << __msa_copy_u_h(vec,2) << std::endl; \
@@ -30,13 +30,13 @@
 	std::cout << "6: 0x" << std::hex << __msa_copy_u_h(vec,6) << std::endl; \
 	std::cout << "7: 0x" << std::hex << __msa_copy_u_h(vec,7) << std::endl;
 
-#define DEFAULT_DUMP_4(suffix,vec) \
+#define DEFAULT_DUMP_4(vec) \
 	std::cout << "0: 0x" << std::hex << __msa_copy_u_w(vec,0) << std::endl; \
 	std::cout << "1: 0x" << std::hex << __msa_copy_u_w(vec,1) << std::endl; \
 	std::cout << "2: 0x" << std::hex << __msa_copy_u_w(vec,2) << std::endl; \
 	std::cout << "3: 0x" << std::hex << __msa_copy_u_w(vec,3) << std::endl;
 
-#define DEFAULT_DUMP_4(suffix,vec) \
+#define DEFAULT_DUMP_2(vec) \
 	std::cout << "0: 0x" << std::hex << __msa_copy_u_d(vec,0) << std::endl; \
 	std::cout << "1: 0x" << std::hex << __msa_copy_u_d(vec,1) << std::endl;
 
