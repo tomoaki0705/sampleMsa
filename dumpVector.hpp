@@ -7,7 +7,7 @@ void dumpVector(vec0 a)                    \
 {                                          \
 	unsigned char stub[16];                \
 	__msa_st_##suffix((vec1)a, (void*)stub, 0);\
-	Tp* dump = (Tp*)stub;                  \
+	type* dump = (type*)stub;              \
 	const int cLength = 16 / sizeof(type); \
 	std::cout << "========================================" << std::endl; \
 	for(auto i = 0;i < cLength;i++)        \
