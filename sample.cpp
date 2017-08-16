@@ -17,6 +17,9 @@ int main(int argc, char**argv)
 	v16u8 v_endianChar = (v16u8)v_endian;
 	dumpVector(v_endianChar);
 
+	v_endianChar = v_endianChar << 3;
+	dumpVector(v_endianChar);
+
 	unsigned char* foo = (unsigned char*)src1;
 	for(auto i = 0;i < 16;i++)
 	{
