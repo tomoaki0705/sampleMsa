@@ -175,7 +175,41 @@ void v_matmul()
 	
 }
 
-// shift right and round and pack and then store
+void v_divide()
+{
+	const int div_src1[] = {1, 2, 3, 4, };
+	const int div_src2[] = {2, 3, 4, 5, };
+
+	v4i32 v_src1 = (v4i32)__msa_ld_w((void*)div_src1, 0);
+	v4i32 v_src2 = (v4i32)__msa_ld_w((void*)div_src2, 0);
+	v4i32 v_dst  = v_src2 / v_src1;
+	dumpVector(v_dst);
+
+	const float div_src11[] = {1.f, 2.f, 3.f, 4.f, };
+	const float div_src12[] = {2.f, 3.f, 4.f, 5.f, };
+	v4f32 v_src11 = (v4f32)__msa_ld_w((void*)div_src11, 0);
+	v4f32 v_src12 = (v4f32)__msa_ld_w((void*)div_src12, 0);
+	v4f32 v_dstf  = v_src12 / v_src11;
+	dumpVector(v_dstf);
+}
+
+void v_mal_expand()
+{
+	const short mul01[] = {1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, };
+	const short mul02[] = {100, 100, 100, 100, 100, 100, 100, 100, };
+	v8i16 v_src01 = (v8i16)__msa_ld_h((void*)mul01, 0);
+	v8i16 v_src02 = (v8i16)__msa_ld_h((void*)mul02, 0);
+	v8i16 v_zero  = (v8i16)__msa_fill_h(0);
+	v4i32 v_src03 = (v4i32)__msa_ilvr_h((v8i16)v_zero, (v8i16)v_src01);
+	v4i32 v_src04 = (v4i32)__msa_ilvl_h((v8i16)v_zero, (v8i16)v_src01);
+	v4i32 v_src05 = (v4i32)__msa_ilvr_h((v8i16)v_zero, (v8i16)v_src02);
+	v4i32 v_src06 = (v4i32)__msa_ilvl_h((v8i16)v_zero, (v8i16)v_src02);
+
+	v4i32 v_dst01 = v_src03 * v_src05;
+	v4i32 v_dst02 = v_src04 * v_src06;
+	dumpVector(v_dst01);
+	dumpVector(v_dst02);
+}
 
 int main(int argc, char**argv)
 {
@@ -194,52 +228,11 @@ int main(int argc, char**argv)
 	std::cout << "======== v_matmul ========" << std::endl;
 	v_matmul();
 
-	//v4u32 v_endian = (v4u32)__msa_ld_w((void*)endianCheck, 0);
-	//dumpVector(v_endian);
-	//v16u8 v_endianChar = (v16u8)v_endian;
-	//dumpVector(v_endianChar);
+	std::cout << "======== / ========" << std::endl;
+	v_divide();
 
-	//inline _Tpvec v_##pack(const _Tpwvec& a, const _Tpwvec& b) \
-	//{ \
-	//    hreg a1 = vqmov##op##_##wsuffix(a.val), b1 = vqmov##op##_##wsuffix(b.val); \
-	//    return _Tpvec(vcombine_##suffix(a1, b1)); \
-	//} \
-	//inline void v_##pack##_store(_Tp* ptr, const _Tpwvec& a) \
-	//{ \
-	//    hreg a1 = vqmov##op##_##wsuffix(a.val); \
-	//    vst1_##suffix(ptr, a1); \
-	//} \
-	//template<int n> inline \
-	//_Tpvec v_rshr_##pack(const _Tpwvec& a, const _Tpwvec& b) \
-	//{ \
-	//    hreg a1 = vqrshr##op##_n_##wsuffix(a.val, n); \
-	//    hreg b1 = vqrshr##op##_n_##wsuffix(b.val, n); \
-	//    return _Tpvec(vcombine_##suffix(a1, b1)); \
-	//} \
-	//template<int n> inline \
-	//void v_rshr_##pack##_store(_Tp* ptr, const _Tpwvec& a) \
-	//{ \
-	//    hreg a1 = vqrshr##op##_n_##wsuffix(a.val, n); \
-	//    vst1_##suffix(ptr, a1); \
-	//}
-
-
-	//v_endianChar = v_endianChar << 3;
-	//dumpVector(v_endianChar);
-
-	//unsigned char* foo = (unsigned char*)src1;
-	//for(auto i = 0;i < 16;i++)
-	//{
-	//	std::cout << i << "\t: " << (int)foo[i] << std::endl;
-	//}
-	//v8i16 v_src1 = (v8i16)__msa_ld_h((void*)src1, 0);
-	//v8i16 v_src2 = (v8i16)__msa_ld_h((void*)src2, 0);
-
-	//dumpVector(v_src1);
-
-	//v8i16 v_dst = v_src1 + v_src2;
-
-	//dumpVector(v_dst);
+	std::cout << "======== v_mal_expand ========" << std::endl;
+	v_mal_expand();
 
 	return 0;
 }
