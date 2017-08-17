@@ -113,3 +113,26 @@ void dumpVector<v2f64>(v2f64 a)
 	DEFAULT_DUMP_2(a);
 }
 
+template<typename T>
+void dumpArray(T* a)
+{
+	auto cLength = 16/sizeof(T);
+	std::cout << "====================" << std::endl;
+	for(auto i = 0;i < cLength;i++)
+	{
+		std::cout << i << ": 0x" << std::hex << a[i] << ' ';
+	}
+	std::cout << std::endl;
+}
+
+template<>
+void dumpArray<unsigned char>(unsigned char* a)
+{
+	auto cLength = 16/sizeof(unsigned char);
+	std::cout << "====================" << std::endl;
+	for(auto i = 0;i < cLength;i++)
+	{
+		std::cout << i << ": 0x" << std::hex << std::setw(2) << std::setfill('0') << (int)a[i] << ' ';
+	}
+	std::cout << std::endl;
+}
