@@ -195,15 +195,31 @@ void v_divide()
 
 static inline void v_expand(const v16i8& a, v8i16 &b, v8i16 &c);
 static inline void v_expand(const v16u8& a, v8u16 &b, v8u16 &c);
-static inline void v_expand(const v8i16& a, v4i32 &b, v4i32 &c);
+static inline void v_expand(const v8i16& a, v4i32 &b, v4i32 &c)
+{
+	b = ((v4i32)__msa_ilvr_h((v8i16)a, (v8i16)a)) >> 16;
+	c = ((v4i32)__msa_ilvl_h((v8i16)a, (v8i16)a)) >> 16;
+}
+
 static inline void v_expand(const v8u16& a, v4u32 &b, v4u32 &c)
 {
 	v8u16 v_zero  = (v8u16)__msa_fill_h(0);
 	b = (v4u32)__msa_ilvr_h((v8i16)v_zero, (v8i16)a);
-	c = (v4u32)__msa_ilvr_h((v8i16)v_zero, (v8i16)a);
+	c = (v4u32)__msa_ilvl_h((v8i16)v_zero, (v8i16)a);
 }
-static inline void v_expand(const v4i32& a, v2i64 &b, v2i64 &c);
-static inline void v_expand(const v4u32& a, v2u64 &b, v2u64 &c);
+
+static inline void v_expand(const v4i32& a, v2i64 &b, v2i64 &c)
+{
+	b = ((v2i64)__msa_ilvr_w((v4i32)a, (v4i32)a)) >> 32;
+	c = ((v2i64)__msa_ilvl_w((v4i32)a, (v4i32)a)) >> 32;
+}
+
+static inline void v_expand(const v4u32& a, v2u64 &b, v2u64 &c)
+{
+	v4u32 v_zero  = (v4u32)__msa_fill_w(0);
+	b = (v2u64)__msa_ilvr_w((v4i32)v_zero, (v4i32)a);
+	c = (v2u64)__msa_ilvl_w((v4i32)v_zero, (v4i32)a);
+}
 
 void v_mal_expand()
 {
@@ -221,6 +237,37 @@ void v_mal_expand()
 	v4i32 v_dst02 = v_src04 * v_src06;
 	dumpVector(v_dst01);
 	dumpVector(v_dst02);
+}
+
+void v_expand()
+{
+	const unsigned short expand01[] = {32768, 36864, 40960, 49554, 128, 256, 1, 16, };
+	v8u16 v_expand01 = (v8u16)__msa_ld_h((void*)expand01, 0);
+	v4u32 v_dst01, v_dst02;
+	v_expand(v_expand01, v_dst01, v_dst02);
+	dumpVector(v_dst01);
+	dumpVector(v_dst02);
+
+	const short expand11[] = {-32768, -28672, -24576, -15982, -1, 32767, 1, 16, };
+	v8i16 v_expand11 = (v8i16)__msa_ld_h((void*)expand11, 0);
+	v4i32 v_dst11, v_dst12;
+	v_expand(v_expand11, v_dst11, v_dst12);
+	dumpVector(v_dst11);
+	dumpVector(v_dst12);
+
+	const unsigned expand21[] = {2147483648, 3221225472, 3758096384, 4026531840};
+	v4u32 v_expand21 = (v4u32)__msa_ld_w((void*)expand21, 0);
+	v2u64 v_dst21, v_dst22;
+	v_expand(v_expand21, v_dst21, v_dst22);
+	dumpVector(v_dst21);
+	dumpVector(v_dst22);
+      
+	const int expand31[] = {-4096, -256, -16, -1, };
+	v4i32 v_expand31 = (v4i32)__msa_ld_w((void*)expand31, 0);
+	v2i64 v_dst31, v_dst32;
+	v_expand(v_expand31, v_dst31, v_dst32);
+	dumpVector(v_dst31);
+	dumpVector(v_dst32);
 }
 
 int main(int argc, char**argv)
@@ -245,6 +292,9 @@ int main(int argc, char**argv)
 
 	std::cout << "======== v_mal_expand ========" << std::endl;
 	v_mal_expand();
+
+	std::cout << "======== v_expand ========" << std::endl;
+	v_expand();
 
 	return 0;
 }
