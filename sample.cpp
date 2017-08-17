@@ -193,6 +193,18 @@ void v_divide()
 	dumpVector(v_dstf);
 }
 
+static inline void v_expand(const v16i8& a, v8i16 &b, v8i16 &c);
+static inline void v_expand(const v16u8& a, v8u16 &b, v8u16 &c);
+static inline void v_expand(const v8i16& a, v4i32 &b, v4i32 &c);
+static inline void v_expand(const v8u16& a, v4u32 &b, v4u32 &c)
+{
+	v8u16 v_zero  = (v8u16)__msa_fill_h(0);
+	b = (v4u32)__msa_ilvr_h((v8i16)v_zero, (v8i16)a);
+	c = (v4u32)__msa_ilvr_h((v8i16)v_zero, (v8i16)a);
+}
+static inline void v_expand(const v4i32& a, v2i64 &b, v2i64 &c);
+static inline void v_expand(const v4u32& a, v2u64 &b, v2u64 &c);
+
 void v_mal_expand()
 {
 	const short mul01[] = {1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, };
