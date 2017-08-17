@@ -56,10 +56,10 @@ typedef struct _f64u64 f64u64;
 #define DEFAULT_DUMP_4_FLOAT(vec) \
 	f32u32 s; \
 	std::cout << std::dec; \
-	s.i = __msa_copy_u_w((v4i32)vec,3);std::cout << "3: " << (float)s.f << ' ' << s.u << ' '; \
-	s.i = __msa_copy_u_w((v4i32)vec,2);std::cout << "2: " << (float)s.f << ' ' << s.u << ' '; \
-	s.i = __msa_copy_u_w((v4i32)vec,1);std::cout << "1: " << (float)s.f << ' ' << s.u << ' '; \
-	s.i = __msa_copy_u_w((v4i32)vec,0);std::cout << "0: " << (float)s.f << ' ' << s.u << std::endl;
+	s.i = __msa_copy_u_w((v4i32)vec,3);std::cout << "3: " << (double)s.f << ' '; \
+	s.i = __msa_copy_u_w((v4i32)vec,2);std::cout << "2: " << (double)s.f << ' '; \
+	s.i = __msa_copy_u_w((v4i32)vec,1);std::cout << "1: " << (double)s.f << ' '; \
+	s.i = __msa_copy_u_w((v4i32)vec,0);std::cout << "0: " << (double)s.f << std::endl;
 
 #define DEFAULT_DUMP_4(vec) \
 	std::cout << "3: 0x" << std::hex << std::setw(8) << std::setfill('0') << __msa_copy_u_w((v4i32)vec,3) << ' '; \
@@ -114,6 +114,7 @@ template <>
 void dumpVector<v4f32>(v4f32 a)
 {
 	DEFAULT_DUMP_4(a);
+	DEFAULT_DUMP_4_FLOAT(a);
 }
 
 template <>
