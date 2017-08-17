@@ -193,8 +193,19 @@ void v_divide()
 	dumpVector(v_dstf);
 }
 
-static inline void v_expand(const v16i8& a, v8i16 &b, v8i16 &c);
-static inline void v_expand(const v16u8& a, v8u16 &b, v8u16 &c);
+static inline void v_expand(const v16i8& a, v8i16 &b, v8i16 &c)
+{
+	b = ((v8i16)__msa_ilvr_b((v16i8)a, (v16i8)a)) >> 8;
+	c = ((v8i16)__msa_ilvl_b((v16i8)a, (v16i8)a)) >> 8;
+}
+
+static inline void v_expand(const v16u8& a, v8u16 &b, v8u16 &c)
+{
+	v16u8 v_zero  = (v16u8)__msa_fill_b(0);
+	b = (v8u16)__msa_ilvr_b((v16i8)v_zero, (v16i8)a);
+	c = (v8u16)__msa_ilvl_b((v16i8)v_zero, (v16i8)a);
+}
+
 static inline void v_expand(const v8i16& a, v4i32 &b, v4i32 &c)
 {
 	b = ((v4i32)__msa_ilvr_h((v8i16)a, (v8i16)a)) >> 16;
@@ -241,33 +252,47 @@ void v_mal_expand()
 
 void v_expand()
 {
-	const unsigned short expand01[] = {32768, 36864, 40960, 49554, 128, 256, 1, 16, };
-	v8u16 v_expand01 = (v8u16)__msa_ld_h((void*)expand01, 0);
-	v4u32 v_dst01, v_dst02;
+	const unsigned char expand01[] = {255, 240, 224, 208, 192, 176, 160, 144, 128, 112, 96, 80, 64, 48, 32, 16, };
+	v16u8 v_expand01 = (v16u8)__msa_ld_b((void*)expand01, 0);
+	v8u16 v_dst01, v_dst02;
 	v_expand(v_expand01, v_dst01, v_dst02);
 	dumpVector(v_dst01);
 	dumpVector(v_dst02);
 
-	const short expand11[] = {-32768, -28672, -24576, -15982, -1, 32767, 1, 16, };
-	v8i16 v_expand11 = (v8i16)__msa_ld_h((void*)expand11, 0);
-	v4i32 v_dst11, v_dst12;
+	const char expand11[] = {-16, -32, -48, -64, -80, -96, -112, -128, -1, 1, -2, 2, -3, 3, -4, 4, };
+	v16i8 v_expand11 = (v16i8)__msa_ld_b((void*)expand11, 0);
+	v8i16 v_dst11, v_dst12;
 	v_expand(v_expand11, v_dst11, v_dst12);
 	dumpVector(v_dst11);
 	dumpVector(v_dst12);
 
-	const unsigned expand21[] = {2147483648, 3221225472, 3758096384, 4026531840};
-	v4u32 v_expand21 = (v4u32)__msa_ld_w((void*)expand21, 0);
-	v2u64 v_dst21, v_dst22;
+	const unsigned short expand21[] = {32768, 36864, 40960, 49554, 128, 256, 1, 16, };
+	v8u16 v_expand21 = (v8u16)__msa_ld_h((void*)expand01, 0);
+	v4u32 v_dst21, v_dst22;
 	v_expand(v_expand21, v_dst21, v_dst22);
 	dumpVector(v_dst21);
 	dumpVector(v_dst22);
-      
-	const int expand31[] = {-4096, -256, -16, -1, };
-	v4i32 v_expand31 = (v4i32)__msa_ld_w((void*)expand31, 0);
-	v2i64 v_dst31, v_dst32;
+
+	const short expand31[] = {-32768, -28672, -24576, -15982, -1, 32767, 1, 16, };
+	v8i16 v_expand31 = (v8i16)__msa_ld_h((void*)expand11, 0);
+	v4i32 v_dst31, v_dst32;
 	v_expand(v_expand31, v_dst31, v_dst32);
 	dumpVector(v_dst31);
 	dumpVector(v_dst32);
+
+	const unsigned expand41[] = {2147483648, 3221225472, 3758096384, 4026531840};
+	v4u32 v_expand41 = (v4u32)__msa_ld_w((void*)expand41, 0);
+	v2u64 v_dst41, v_dst42;
+	v_expand(v_expand41, v_dst41, v_dst42);
+	dumpVector(v_dst41);
+	dumpVector(v_dst42);
+      
+	const int expand51[] = {-4096, -256, -16, -1, };
+	v4i32 v_expand51 = (v4i32)__msa_ld_w((void*)expand51, 0);
+	v2i64 v_dst51, v_dst52;
+	v_expand(v_expand51, v_dst51, v_dst52);
+	dumpVector(v_dst51);
+	dumpVector(v_dst52);
 }
 
 int main(int argc, char**argv)
