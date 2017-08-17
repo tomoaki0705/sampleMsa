@@ -3,42 +3,42 @@
 #include <iomanip>
 
 #define DEFAULT_DUMP_16(vec) \
-	std::cout << "0: 0x" << std::hex << __msa_copy_u_b(vec,0) << std::endl; \
-	std::cout << "1: 0x" << std::hex << __msa_copy_u_b(vec,1) << std::endl; \
-	std::cout << "2: 0x" << std::hex << __msa_copy_u_b(vec,2) << std::endl; \
-	std::cout << "3: 0x" << std::hex << __msa_copy_u_b(vec,3) << std::endl; \
-	std::cout << "4: 0x" << std::hex << __msa_copy_u_b(vec,4) << std::endl; \
-	std::cout << "5: 0x" << std::hex << __msa_copy_u_b(vec,5) << std::endl; \
-	std::cout << "6: 0x" << std::hex << __msa_copy_u_b(vec,6) << std::endl; \
-	std::cout << "7: 0x" << std::hex << __msa_copy_u_b(vec,7) << std::endl; \
-	std::cout << "8: 0x" << std::hex << __msa_copy_u_b(vec,8) << std::endl; \
-	std::cout << "9: 0x" << std::hex << __msa_copy_u_b(vec,9) << std::endl; \
-	std::cout << "10: 0x" << std::hex << __msa_copy_u_b(vec,10) << std::endl; \
-	std::cout << "11: 0x" << std::hex << __msa_copy_u_b(vec,11) << std::endl; \
-	std::cout << "12: 0x" << std::hex << __msa_copy_u_b(vec,12) << std::endl; \
-	std::cout << "13: 0x" << std::hex << __msa_copy_u_b(vec,13) << std::endl; \
-	std::cout << "14: 0x" << std::hex << __msa_copy_u_b(vec,14) << std::endl; \
-	std::cout << "15: 0x" << std::hex << __msa_copy_u_b(vec,15) << std::endl;
+	std::cout << "0: 0x" << std::hex << __msa_copy_u_b((v16i8)vec,0) << std::endl; \
+	std::cout << "1: 0x" << std::hex << __msa_copy_u_b((v16i8)vec,1) << std::endl; \
+	std::cout << "2: 0x" << std::hex << __msa_copy_u_b((v16i8)vec,2) << std::endl; \
+	std::cout << "3: 0x" << std::hex << __msa_copy_u_b((v16i8)vec,3) << std::endl; \
+	std::cout << "4: 0x" << std::hex << __msa_copy_u_b((v16i8)vec,4) << std::endl; \
+	std::cout << "5: 0x" << std::hex << __msa_copy_u_b((v16i8)vec,5) << std::endl; \
+	std::cout << "6: 0x" << std::hex << __msa_copy_u_b((v16i8)vec,6) << std::endl; \
+	std::cout << "7: 0x" << std::hex << __msa_copy_u_b((v16i8)vec,7) << std::endl; \
+	std::cout << "8: 0x" << std::hex << __msa_copy_u_b((v16i8)vec,8) << std::endl; \
+	std::cout << "9: 0x" << std::hex << __msa_copy_u_b((v16i8)vec,9) << std::endl; \
+	std::cout << "10: 0x" << std::hex << __msa_copy_u_b((v16i8)vec,10) << std::endl; \
+	std::cout << "11: 0x" << std::hex << __msa_copy_u_b((v16i8)vec,11) << std::endl; \
+	std::cout << "12: 0x" << std::hex << __msa_copy_u_b((v16i8)vec,12) << std::endl; \
+	std::cout << "13: 0x" << std::hex << __msa_copy_u_b((v16i8)vec,13) << std::endl; \
+	std::cout << "14: 0x" << std::hex << __msa_copy_u_b((v16i8)vec,14) << std::endl; \
+	std::cout << "15: 0x" << std::hex << __msa_copy_u_b((v16i8)vec,15) << std::endl;
 
 #define DEFAULT_DUMP_8(vec) \
-	std::cout << "0: 0x" << std::hex << __msa_copy_u_h(vec,0) << std::endl; \
-	std::cout << "1: 0x" << std::hex << __msa_copy_u_h(vec,1) << std::endl; \
-	std::cout << "2: 0x" << std::hex << __msa_copy_u_h(vec,2) << std::endl; \
-	std::cout << "3: 0x" << std::hex << __msa_copy_u_h(vec,3) << std::endl; \
-	std::cout << "4: 0x" << std::hex << __msa_copy_u_h(vec,4) << std::endl; \
-	std::cout << "5: 0x" << std::hex << __msa_copy_u_h(vec,5) << std::endl; \
-	std::cout << "6: 0x" << std::hex << __msa_copy_u_h(vec,6) << std::endl; \
-	std::cout << "7: 0x" << std::hex << __msa_copy_u_h(vec,7) << std::endl;
+	std::cout << "0: 0x" << std::hex << __msa_copy_u_h((v8i16)vec,0) << std::endl; \
+	std::cout << "1: 0x" << std::hex << __msa_copy_u_h((v8i16)vec,1) << std::endl; \
+	std::cout << "2: 0x" << std::hex << __msa_copy_u_h((v8i16)vec,2) << std::endl; \
+	std::cout << "3: 0x" << std::hex << __msa_copy_u_h((v8i16)vec,3) << std::endl; \
+	std::cout << "4: 0x" << std::hex << __msa_copy_u_h((v8i16)vec,4) << std::endl; \
+	std::cout << "5: 0x" << std::hex << __msa_copy_u_h((v8i16)vec,5) << std::endl; \
+	std::cout << "6: 0x" << std::hex << __msa_copy_u_h((v8i16)vec,6) << std::endl; \
+	std::cout << "7: 0x" << std::hex << __msa_copy_u_h((v8i16)vec,7) << std::endl;
 
 #define DEFAULT_DUMP_4(vec) \
-	std::cout << "0: 0x" << std::hex << __msa_copy_u_w(vec,0) << std::endl; \
-	std::cout << "1: 0x" << std::hex << __msa_copy_u_w(vec,1) << std::endl; \
-	std::cout << "2: 0x" << std::hex << __msa_copy_u_w(vec,2) << std::endl; \
-	std::cout << "3: 0x" << std::hex << __msa_copy_u_w(vec,3) << std::endl;
+	std::cout << "0: 0x" << std::hex << __msa_copy_u_w((v4i32)vec,0) << std::endl; \
+	std::cout << "1: 0x" << std::hex << __msa_copy_u_w((v4i32)vec,1) << std::endl; \
+	std::cout << "2: 0x" << std::hex << __msa_copy_u_w((v4i32)vec,2) << std::endl; \
+	std::cout << "3: 0x" << std::hex << __msa_copy_u_w((v4i32)vec,3) << std::endl;
 
 #define DEFAULT_DUMP_2(vec) \
-	std::cout << "0: 0x" << std::hex << __msa_copy_u_d(vec,0) << std::endl; \
-	std::cout << "1: 0x" << std::hex << __msa_copy_u_d(vec,1) << std::endl;
+	std::cout << "0: 0x" << std::hex << __msa_copy_u_d((v2i64)vec,0) << std::endl; \
+	std::cout << "1: 0x" << std::hex << __msa_copy_u_d((v2i64)vec,1) << std::endl;
 
 template<typename T>
 void dumpVector(T a);
