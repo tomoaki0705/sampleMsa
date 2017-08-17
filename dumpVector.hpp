@@ -156,3 +156,15 @@ void dumpArray<unsigned char>(unsigned char* a)
 	}
 	std::cout << std::endl;
 }
+
+template<>
+void dumpArray<float>(float* a)
+{
+	auto cLength = 16/sizeof(float);
+	for(auto i = 0;i < cLength;i++)
+	{
+		std::cout << i << ": 0x" << std::hex << *(int*)(&a[i]) << ' ' << (double)a[i] << ' ';
+	}
+	std::cout << std::endl;
+}
+

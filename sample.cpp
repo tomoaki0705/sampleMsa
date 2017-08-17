@@ -154,9 +154,6 @@ void v_matmul()
 	v4f32 v_m3 = (v4f32)__msa_ld_w((void*)m3, 0);
 	v4f32 v_v  = (v4f32)__msa_ld_w((void*)v, 0);
 
-	dumpVector(v_v);
-	dumpVector(__msa_splati_w((v4i32)v_v, 0));
-	dumpVector(v_m0);
 	v_m0 = v_m0 * (v4f32)__msa_splati_w((v4i32)v_v, 0);
 	v_m1 = v_m1 * (v4f32)__msa_splati_w((v4i32)v_v, 1);
 	v_m2 = v_m2 * (v4f32)__msa_splati_w((v4i32)v_v, 2);
@@ -168,6 +165,13 @@ void v_matmul()
 
 	v4f32 result = v_m0 + v_m1 + v_m2 + v_m3;
 	dumpVector(result);
+
+	float dst[] = {0.f, 0.f, 0.f, 0.f, };
+	dst[0] = m0[0] * v[0] + m1[0] * v[1] + m2[0] * v[2] + m3[0] * v[3];
+	dst[1] = m0[1] * v[0] + m1[1] * v[1] + m2[1] * v[2] + m3[1] * v[3];
+	dst[2] = m0[2] * v[0] + m1[2] * v[1] + m2[2] * v[2] + m3[2] * v[3];
+	dst[3] = m0[3] * v[0] + m1[3] * v[1] + m2[3] * v[2] + m3[3] * v[3];
+	dumpArray(dst);
 	
 }
 
