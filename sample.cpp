@@ -232,7 +232,7 @@ static inline void v_expand(const v4u32& a, v2u64 &b, v2u64 &c)
 	c = (v2u64)__msa_ilvl_w((v4i32)v_zero, (v4i32)a);
 }
 
-void v_mal_expand()
+void v_mul_expand()
 {
 	const short mul01[] = {1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, };
 	const short mul02[] = {100, 100, 100, 100, 100, 100, 100, 100, };
@@ -315,8 +315,8 @@ int main(int argc, char**argv)
 	std::cout << "======== / ========" << std::endl;
 	v_divide();
 
-	std::cout << "======== v_mal_expand ========" << std::endl;
-	v_mal_expand();
+	std::cout << "======== v_mul_expand ========" << std::endl;
+	v_mul_expand();
 
 	std::cout << "======== v_expand ========" << std::endl;
 	v_expand();
