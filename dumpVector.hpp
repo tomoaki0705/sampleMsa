@@ -46,60 +46,70 @@ void dumpVector(T a);
 template <>
 void dumpVector<v16i8>(v16i8 a)
 {
+	std::cout << "====================" << std::endl;
 	DEFAULT_DUMP_16(a);
 }
 
 template <>
 void dumpVector<v16u8>(v16u8 a)
 {
+	std::cout << "====================" << std::endl;
 	DEFAULT_DUMP_16(a);
 }
 
 template <>
 void dumpVector<v8i16>(v8i16 a)
 {
+	std::cout << "====================" << std::endl;
 	DEFAULT_DUMP_8(a);
 }
 
 template <>
 void dumpVector<v8u16>(v8u16 a)
 {
+	std::cout << "====================" << std::endl;
 	DEFAULT_DUMP_8(a);
 }
 
 template <>
 void dumpVector<v4i32>(v4i32 a)
 {
+	std::cout << "====================" << std::endl;
 	DEFAULT_DUMP_4(a);
 }
 
 template <>
 void dumpVector<v4u32>(v4u32 a)
 {
+	std::cout << "====================" << std::endl;
 	DEFAULT_DUMP_4(a);
 }
 
 template <>
 void dumpVector<v4f32>(v4f32 a)
 {
+	std::cout << "====================" << std::endl;
 	DEFAULT_DUMP_4(a);
 }
 
 template <>
 void dumpVector<v2i64>(v2i64 a)
 {
+	std::cout << "====================" << std::endl;
 	DEFAULT_DUMP_2(a);
 }
 
 template <>
 void dumpVector<v2u64>(v2u64 a)
 {
+	std::cout << "====================" << std::endl;
 	DEFAULT_DUMP_2(a);
 }
 
 template<>
 void dumpVector<v2f64>(v2f64 a)
 {
+	std::cout << "====================" << std::endl;
 	DEFAULT_DUMP_2(a);
 }
 

@@ -10,13 +10,15 @@ short dst[] = {0, 0, 0, 0, 0, 0, 0, 0, };
 
 v8i16 v_pack(const v4i32& a, const v4i32& b)
 {
-	return __msa_pckev_h((v8i16)a, (v8i16)b);
+	return __msa_pckev_h((v8i16)b, (v8i16)a);
 }
 
 int main(int argc, char**argv)
 {
 	v4i32 v_pack1 = __msa_ld_w((void*)pack1, 0);
 	v4i32 v_pack2 = __msa_ld_w((void*)pack2, 0);
+	dumpVector(v_pack1);
+	dumpVector(v_pack2);
 	v8i16 v_pack_dst = v_pack(v_pack1, v_pack2);
 	dumpVector(v_pack_dst);
 
