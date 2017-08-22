@@ -9,8 +9,6 @@ const unsigned short pack21[] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88,
 const unsigned short pack22[] = {0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff, 0x00, };
 
 const unsigned int endianCheck[] = {0x1234567, 0x89abcdef, 0xacacacac, 0x559f559f};
-const short src1[] = {1, 2, 3, 4, 5, 6, 7, 8, };
-const short src2[] = {100, 100, 100, 100, 100, 100, 100, 100,};
 short dst[] = {0, 0, 0, 0, 0, 0, 0, 0, };
 
 // pack
@@ -320,6 +318,48 @@ void v_expand()
 	dumpVector(v_dst52);
 }
 
+void v_dotprod()
+{
+
+	const short src01[] = {1, 2, 3, 4, 5, 6, 7, 8, };
+	const short src02[] = {0x4000, 0x4000, 0x4000, 0x4000, -1, -1, -1, -1, };
+
+	v8i16 v_src01 = (v8i16)__msa_ld_h((void*)src01, 0);
+	v8i16 v_src02 = (v8i16)__msa_ld_h((void*)src02, 0);
+	v4i32 v_dst01 = __msa_dotp_s_w(v_src01, v_src02);
+	dumpVector(v_dst01);
+}
+
+void v_sqrt()
+{
+	const float src01[] = {1.0f, 2.0f, 3.0f, 4.0f, };
+
+	v4f32 v_src01 = (v4f32)__msa_ld_w((void*)src01, 0);
+	v4f32 v_dst01 = __msa_fsqrt_w(v_src01);
+	dumpVector(v_dst01);
+
+	const double src11[] = {1.0f, 2.0f, };
+
+	v2f64 v_src11 = (v2f64)__msa_ld_d((void*)src11, 0);
+	v2f64 v_dst11 = __msa_fsqrt_d(v_src11);
+	dumpVector(v_dst11);
+}
+
+void v_invsqrt()
+{
+	const float src01[] = {1.0f, 2.0f, 3.0f, 4.0f, };
+
+	v4f32 v_src01 = (v4f32)__msa_ld_w((void*)src01, 0);
+	v4f32 v_dst01 = __msa_frsqrt_w(v_src01);
+	dumpVector(v_dst01);
+
+	const double src11[] = {1.0f, 2.0f, };
+
+	v2f64 v_src11 = (v2f64)__msa_ld_d((void*)src11, 0);
+	v2f64 v_dst11 = __msa_frsqrt_d(v_src11);
+	dumpVector(v_dst11);
+}
+
 int main(int argc, char**argv)
 {
 	std::cout << "======== v_pack ========" << std::endl;
@@ -345,6 +385,15 @@ int main(int argc, char**argv)
 
 	std::cout << "======== v_expand ========" << std::endl;
 	v_expand();
+
+	std::cout << "======== v_dotprod ========" << std::endl;
+	v_dotprod();
+
+	std::cout << "======== v_sqrt ========" << std::endl;
+	v_sqrt();
+
+	std::cout << "======== v_invsqrt ========" << std::endl;
+	v_invsqrt();
 
 	return 0;
 }
