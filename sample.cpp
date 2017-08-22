@@ -234,20 +234,45 @@ static inline void v_expand(const v4u32& a, v2u64 &b, v2u64 &c)
 
 void v_mul_expand()
 {
-	const short mul01[] = {1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, };
-	const short mul02[] = {100, 100, 100, 100, 100, 100, 100, 100, };
-	v8i16 v_src01 = (v8i16)__msa_ld_h((void*)mul01, 0);
-	v8i16 v_src02 = (v8i16)__msa_ld_h((void*)mul02, 0);
-	v8i16 v_zero  = (v8i16)__msa_fill_h(0);
-	v4i32 v_src03 = (v4i32)__msa_ilvr_h((v8i16)v_zero, (v8i16)v_src01);
-	v4i32 v_src04 = (v4i32)__msa_ilvl_h((v8i16)v_zero, (v8i16)v_src01);
-	v4i32 v_src05 = (v4i32)__msa_ilvr_h((v8i16)v_zero, (v8i16)v_src02);
-	v4i32 v_src06 = (v4i32)__msa_ilvl_h((v8i16)v_zero, (v8i16)v_src02);
+	const unsigned short mul01[] = {1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, };
+	const unsigned short mul02[] = {100, 100, 100, 100, 100, 100, 100, 100, };
+	v8u16 v_src01 = (v8u16)__msa_ld_h((void*)mul01, 0);
+	v8u16 v_src02 = (v8u16)__msa_ld_h((void*)mul02, 0);
+	v4u32 v_src03, v_src04, v_src05, v_src06;
+	v_expand(v_src01, v_src03, v_src04);
+	v_expand(v_src02, v_src05, v_src06);
 
-	v4i32 v_dst01 = v_src03 * v_src05;
-	v4i32 v_dst02 = v_src04 * v_src06;
+	v4u32 v_dst01 = v_src03 * v_src05;
+	v4u32 v_dst02 = v_src04 * v_src06;
 	dumpVector(v_dst01);
 	dumpVector(v_dst02);
+
+	const short mul11[] = {-1, -2, -3, -4, -5, -6, -7, -8, };
+	const short mul12[] = {-32768, 32767, -32768, 32767, -32768, 32767, -32768, 32767, };
+	v8i16 v_src11 = (v8i16)__msa_ld_h((void*)mul11, 0);
+	v8i16 v_src12 = (v8i16)__msa_ld_h((void*)mul12, 0);
+	v4i32 v_src13, v_src14, v_src15, v_src16;
+	v_expand(v_src11, v_src13, v_src14);
+	v_expand(v_src12, v_src15, v_src16);
+
+	v4i32 v_dst11 = v_src13 * v_src15;
+	v4i32 v_dst12 = v_src14 * v_src16;
+	dumpVector(v_dst11);
+	dumpVector(v_dst12);
+
+	const unsigned mul21[] = {0x80000000, 0x80000000, 0x80000000, 0x80000000, };
+	const unsigned mul22[] = {2, 4, 8, 16, };
+	v4u32 v_src21 = (v4u32)__msa_ld_w((void*)mul21, 0);
+	v4u32 v_src22 = (v4u32)__msa_ld_w((void*)mul22, 0);
+	v2u64 v_src23, v_src24, v_src25, v_src26;
+	v_expand(v_src21, v_src23, v_src24);
+	v_expand(v_src22, v_src25, v_src26);
+
+	v2u64 v_dst21 = v_src23 * v_src25;
+	v2u64 v_dst22 = v_src24 * v_src26;
+	dumpVector(v_dst21);
+	dumpVector(v_dst22);
+
 }
 
 void v_expand()
