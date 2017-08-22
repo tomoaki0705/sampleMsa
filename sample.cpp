@@ -360,6 +360,42 @@ void v_invsqrt()
 	dumpVector(v_dst11);
 }
 
+void v_abs()
+{
+	v4i32 v_zero = (v4i32)__msa_fill_w(0);
+
+	const char src01[] = {1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, };
+	v16i8 v_src01 = (v16i8)__msa_ld_b((void*)src01, 0);
+	v16u8 v_dst01 = (v16u8)__msa_add_a_b(v_src01, (v16i8)v_zero);
+	dumpVector(v_src01);
+	dumpVector(v_dst01);
+
+	const short src11[] = {1, -1, 2, -2, 3, -3, 4, -4, };
+	v8i16 v_src11 = (v8i16)__msa_ld_h((void*)src11, 0);
+	v8u16 v_dst11 = (v8u16)__msa_add_a_h(v_src11, (v8i16)v_zero);
+	dumpVector(v_src11);
+	dumpVector(v_dst11);
+
+	const int src21[] = {1, -1, 2, -2, 3, -3, 4, -4, };
+	v4i32 v_src21 = (v4i32)__msa_ld_w((void*)src21, 0);
+	v4u32 v_dst21 = (v4u32)__msa_add_a_w(v_src21, (v4i32)v_zero);
+	dumpVector(v_src21);
+	dumpVector(v_dst21);
+
+	v4i32 v_mask = (v4i32)__msa_fill_w(-1);
+
+	const float src31[] = {-1, -2, -3, -4, };
+	v4f32 v_src31 = (v4f32)__msa_ld_w((void*)src31, 0);
+	v4f32 v_dst31 = (v4f32)((v4u32)v_src31 & (((v4u32)v_mask) >> 1));
+	dumpVector(v_dst31);
+
+	const double src41[] = {-1, -2, };
+	v2f64 v_src41 = (v2f64)__msa_ld_d((void*)src41, 0);
+	v2f64 v_dst41 = (v2f64)((v2u64)v_src41 & (((v2u64)v_mask) >> 1));
+	dumpVector(v_src41);
+	dumpVector(v_dst41);
+}
+
 int main(int argc, char**argv)
 {
 	std::cout << "======== v_pack ========" << std::endl;
@@ -394,6 +430,9 @@ int main(int argc, char**argv)
 
 	std::cout << "======== v_invsqrt ========" << std::endl;
 	v_invsqrt();
+
+	std::cout << "======== v_abs ========" << std::endl;
+	v_abs();
 
 	return 0;
 }
