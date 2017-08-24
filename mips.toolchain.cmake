@@ -2,7 +2,7 @@
 SET(CMAKE_SYSTEM_NAME Linux)
 
 # specify the cross compiler
-SET(CMAKE_C_COMPILER   /opt/cross/bin/mipsel-linux-gcc-7.1.0)
+SET(CMAKE_C_COMPILER   /opt/cross/bin/mipsel-linux-gcc)
 SET(CMAKE_CXX_COMPILER /opt/cross/bin/mipsel-linux-g++)
 
 # where is the target environment 

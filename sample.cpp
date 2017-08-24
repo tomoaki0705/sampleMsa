@@ -360,6 +360,15 @@ void v_invsqrt()
 	dumpVector(v_dst11);
 }
 
+#define HAL_IMPL_MSA_ABS_FUNC(Tpvec,Tpuvec)         \
+static inline Tpvec v_abs(const Tpvec& a)           \
+{                                                   \
+	const Tpuvec v_mask = (Tpuvec)__msa_fill_w(-1); \
+	return (Tpvec)((Tpuvec)a & (v_mask >> 1));      \
+}
+HAL_IMPL_MSA_ABS_FUNC(v4f32,v4u32);
+HAL_IMPL_MSA_ABS_FUNC(v2f64,v2u64);
+
 void v_abs()
 {
 	v4i32 v_zero = (v4i32)__msa_fill_w(0);
@@ -386,14 +395,117 @@ void v_abs()
 
 	const float src31[] = {-1, -2, -3, -4, };
 	v4f32 v_src31 = (v4f32)__msa_ld_w((void*)src31, 0);
-	v4f32 v_dst31 = (v4f32)((v4u32)v_src31 & (((v4u32)v_mask) >> 1));
+	v4f32 v_dst31 = v_abs(v_src31);
 	dumpVector(v_dst31);
 
 	const double src41[] = {-1, -2, };
 	v2f64 v_src41 = (v2f64)__msa_ld_d((void*)src41, 0);
-	v2f64 v_dst41 = (v2f64)((v2u64)v_src41 & (((v2u64)v_mask) >> 1));
+	v2f64 v_dst41 = v_abs(v_src41);
 	dumpVector(v_src41);
 	dumpVector(v_dst41);
+}
+
+void v_comparison()
+{
+	const int src01[] = {1, 2, 3, 4, };
+	const int src02[] = {2, 2, 2, 2, };
+	v4i32 v_src01 = (v4i32)__msa_ld_w((void*)src01, 0);
+	v4i32 v_src02 = (v4i32)__msa_ld_w((void*)src02, 0);
+	dumpVector(v_src01);
+	dumpVector(v_src02);
+
+	v4i32 v_dst01 = v_src01 == v_src02;
+	v4i32 v_dst02 = v_src01 < v_src02;
+	v4i32 v_dst03 = v_src01 <= v_src02;
+	v4i32 v_dst04 = v_src01 > v_src02;
+	v4i32 v_dst05 = v_src01 >= v_src02;
+	v4i32 v_dst06 = v_src01 != v_src02;
+	dumpVector(v_dst01);
+	dumpVector(v_dst02);
+	dumpVector(v_dst03);
+	dumpVector(v_dst04);
+	dumpVector(v_dst05);
+	dumpVector(v_dst06);
+}
+
+void v_absdiff()
+{
+	const char src01[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, };
+	const char src02[] = {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, };
+	v16i8 v_src01 = (v16i8)__msa_ld_b((void*)src01, 0);
+	v16i8 v_src02 = (v16i8)__msa_ld_b((void*)src02, 0);
+	v16u8 v_dst01 = (v16u8)__msa_asub_s_b(v_src01, v_src02);
+	dumpVector(v_src01);
+	dumpVector(v_src02);
+	dumpVector(v_dst01);
+
+	const short src11[] = {1, 2, 3, 4, 5, 6, 7, 8, };
+	const short src12[] = {4, 4, 4, 4, 4, 4, 4, 4, };
+	v8i16 v_src11 = (v8i16)__msa_ld_h((void*)src11, 0);
+	v8i16 v_src12 = (v8i16)__msa_ld_h((void*)src12, 0);
+	v8u16 v_dst11 = (v8u16)__msa_asub_s_h(v_src11, v_src12);
+	dumpVector(v_src11);
+	dumpVector(v_src12);
+	dumpVector(v_dst11);
+
+	const int src21[] = {1, 2, 3, 4, };
+	const int src22[] = {4, 4, 4, 4, };
+	v4i32 v_src21 = (v4i32)__msa_ld_w((void*)src21, 0);
+	v4i32 v_src22 = (v4i32)__msa_ld_w((void*)src22, 0);
+	v4u32 v_dst21 = (v4u32)__msa_asub_s_w(v_src21, v_src22);
+	dumpVector(v_src21);
+	dumpVector(v_src22);
+	dumpVector(v_dst21);
+
+	const float src31[] = {1, 2, 3, 4, };
+	const float src32[] = {4, 4, 4, 4, };
+	v4f32 v_src31 = (v4f32)__msa_ld_w((void*)src31, 0);
+	v4f32 v_src32 = (v4f32)__msa_ld_w((void*)src32, 0);
+	v4f32 v_dst31 = v_abs(v_src31 - v_src32);
+	dumpVector(v_src31);
+	dumpVector(v_src32);
+	dumpVector(v_dst31);
+
+	const double src41[] = {1, 2, };
+	const double src42[] = {4, 4, };
+	v2f64 v_src41 = (v2f64)__msa_ld_d((void*)src41, 0);
+	v2f64 v_src42 = (v2f64)__msa_ld_d((void*)src42, 0);
+	v2f64 v_dst41 = v_abs(v_src41 - v_src42);
+	dumpVector(v_src41);
+	dumpVector(v_src42);
+	dumpVector(v_dst41);
+}
+
+void v_add_wrap()
+{
+	const unsigned char src01[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, };
+	const unsigned char src02[] = {254, 254, 254, 254, 254, 254, 254, 254, 254, 254, 254, 254, 254, 254, 254, 254, };
+	v16u8 v_src01 = (v16u8)__msa_ld_b((void*)src01, 0);
+	v16u8 v_src02 = (v16u8)__msa_ld_b((void*)src02, 0);
+	v16u8 v_dst01 = v_src01 + v_src02;
+	v16u8 v_dst02 = __msa_adds_u_b(v_src01, v_src02);
+	v16u8 v_dst03 = (v16u8)__msa_addv_b((v16i8)v_src01, (v16i8)v_src02);
+	dumpVector(v_src01);
+	dumpVector(v_src02);
+	dumpVector(v_dst01);
+	dumpVector(v_dst02);
+	dumpVector(v_dst03);
+}
+
+void v_sub_wrap()
+{
+	const unsigned char src01[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, };
+	const unsigned char src02[] = {8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, };
+	v16i8 v_src01 = (v16i8)__msa_ld_b((void*)src01, 0);
+	v16i8 v_src02 = (v16i8)__msa_ld_b((void*)src02, 0);
+	v16i8 v_dst01 = v_src01 - v_src02;
+	v16i8 v_dst02 = __msa_subs_s_b(v_src01, v_src02);
+	v16i8 v_dst03 = (v16i8)__msa_subv_b((v16i8)v_src01, (v16i8)v_src02);
+	dumpVector(v_src01);
+	dumpVector(v_src02);
+	dumpVector(v_dst01);
+	dumpVector(v_dst02);
+	dumpVector(v_dst03);
 }
 
 int main(int argc, char**argv)
@@ -433,6 +545,18 @@ int main(int argc, char**argv)
 
 	std::cout << "======== v_abs ========" << std::endl;
 	v_abs();
+
+	std::cout << "======== =, == ========" << std::endl;
+	v_comparison();
+
+	std::cout << "======== v_absdiff ========" << std::endl;
+	v_absdiff();
+
+	std::cout << "======== v_add_wrap ========" << std::endl;
+	v_add_wrap();
+
+	std::cout << "======== v_sub_wrap ========" << std::endl;
+	v_sub_wrap();
 
 	return 0;
 }
