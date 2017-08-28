@@ -565,6 +565,162 @@ void v_muladd()
 	dumpVector(v_dst11);
 }
 
+void v_reduce_sum()
+{
+	unsigned short src01[] = {32764, 32765, 32766, 32767, 32768, 32769, 32770, 32771, 32772, };
+	v8u16 v_src01 = v_load(src01);
+	v4u32 v_dst01 = __msa_hadd_u_w(v_src01, v_src01);
+	v2u64 v_dst11 = __msa_hadd_u_d(v_dst01, v_dst01);
+	dumpVector(v_src01);
+	dumpVector(v_dst01);
+	dumpVector(v_dst11);
+
+	short src02[] = {-4, -3, -2, -1, 0, 1, 2, 3, };
+	v8i16 v_src02 = v_load(src02);
+	v4i32 v_dst02 = __msa_hadd_s_w(v_src02, v_src02);
+	v2i64 v_dst12 = __msa_hadd_s_d(v_dst02, v_dst02);
+	dumpVector(v_src02);
+	dumpVector(v_dst02);
+	dumpVector(v_dst12);
+}
+
+#define _MSA_SHUFFLE(fp3,fp2,fp1,fp0) (((fp3) << 6) | ((fp2) << 4) | ((fp1) << 2) | ((fp0)))
+
+
+void v_reduce_max()
+{
+	unsigned short src01[] = {0x18e5, 0xed06, 0xee8a, 0xfc87, 0x7d3e, 0x38fb, 0x2539, 0x2840, };
+	v8u16 v_src01 = v_load(src01);
+	v8u16 v_src02 = (v8u16)__msa_shf_w((v4i32)v_src01, _MSA_SHUFFLE(3, 2, 3, 2));
+	v8u16 v_src03 = (v8u16)__msa_max_u_h(v_src01, v_src02);
+	v8u16 v_src04 = (v8u16)__msa_shf_w((v4i32)v_src03, _MSA_SHUFFLE(3, 2, 1, 1));
+	v8u16 v_src05 = (v8u16)__msa_max_u_h(v_src03, v_src04);
+	v8u16 v_src06 = (v8u16)__msa_shf_h((v8i16)v_src05, _MSA_SHUFFLE(3, 2, 1, 1));
+	v8u16 v_src07 = (v8u16)__msa_max_u_h(v_src05, v_src06);
+	unsigned short dst01 = __msa_copy_u_h((v8i16)v_src07, 0);
+	dumpVector(v_src01);
+	dumpVector(v_src03);
+	dumpVector(v_src05);
+	dumpVector(v_src07);
+	std::cout << dst01 << std::endl;
+
+	v8i16 v_src11 = v_load((short*)src01);
+	v8i16 v_src12 = (v8i16)__msa_shf_w((v4i32)v_src11, _MSA_SHUFFLE(3, 2, 3, 2));
+	v8i16 v_src13 = (v8i16)__msa_max_s_h(v_src11, v_src12);
+	v8i16 v_src14 = (v8i16)__msa_shf_w((v4i32)v_src13, _MSA_SHUFFLE(3, 2, 1, 1));
+	v8i16 v_src15 = (v8i16)__msa_max_s_h(v_src13, v_src14);
+	v8i16 v_src16 = (v8i16)__msa_shf_h((v8i16)v_src15, _MSA_SHUFFLE(3, 2, 1, 1));
+	v8i16 v_src17 = (v8i16)__msa_max_s_h(v_src15, v_src16);
+	short dst11 = __msa_copy_s_h((v8i16)v_src17, 0);
+	dumpVector(v_src11);
+	dumpVector(v_src13);
+	dumpVector(v_src15);
+	dumpVector(v_src17);
+	std::cout << dst11 << std::endl;
+
+	unsigned int src21[] = {0x18e5ed06, 0xee8afc87, 0x7d3e38fb, 0x25392840, };
+	v4u32 v_src21 = v_load(src21);
+	v4u32 v_src22 = (v4u32)__msa_shf_w((v4i32)v_src21, _MSA_SHUFFLE(3, 2, 3, 2));
+	v4u32 v_src23 = (v4u32)__msa_max_u_w(v_src21, v_src22);
+	v4u32 v_src24 = (v4u32)__msa_shf_w((v4i32)v_src21, _MSA_SHUFFLE(3, 2, 1, 1));
+	v4u32 v_src25 = (v4u32)__msa_max_u_w(v_src23, v_src24);
+	unsigned int dst21 = __msa_copy_u_w((v4i32)v_src25, 0);
+	dumpVector(v_src21);
+	dumpVector(v_src23);
+	dumpVector(v_src25);
+	std::cout << dst21 << std::endl;
+
+	v4i32 v_src31 = v_load((int*)src21);
+	v4i32 v_src32 = (v4i32)__msa_shf_w(v_src31, _MSA_SHUFFLE(3, 2, 3, 2));
+	v4i32 v_src33 = (v4i32)__msa_max_s_w(v_src31, v_src32);
+	v4i32 v_src34 = (v4i32)__msa_shf_w(v_src33, _MSA_SHUFFLE(3, 2, 1, 1));
+	v4i32 v_src35 = (v4i32)__msa_max_s_w(v_src33, v_src34);
+	int dst31 = __msa_copy_s_w(v_src35, 0);
+	dumpVector(v_src31);
+	dumpVector(v_src33);
+	dumpVector(v_src35);
+	std::cout << dst31 << std::endl;
+
+	float src41[] = {-1.f, 0.f, 1.f, 2.f};
+	v4f32 v_src41 = v_load(src41);
+	v4f32 v_src42 = (v4f32)__msa_shf_w((v4i32)v_src41, _MSA_SHUFFLE(3, 2, 3, 2));
+	v4f32 v_src43 = (v4f32)__msa_fmax_w(v_src41, v_src42);
+	v4f32 v_src44 = (v4f32)__msa_shf_w((v4i32)v_src43, _MSA_SHUFFLE(3, 2, 1, 1));
+	v4f32 v_src45 = (v4f32)__msa_fmax_w(v_src43, v_src44);
+	unsigned int dst41 = __msa_copy_u_w((v4i32)v_src45, 0);
+	dumpVector(v_src41);
+	dumpVector(v_src43);
+	dumpVector(v_src45);
+	std::cout << std::hex << "0x" << dst41 << std::endl;
+}
+
+void v_reduce_min()
+{
+	unsigned short src01[] = {0x18e5, 0xed06, 0xee8a, 0xfc87, 0x7d3e, 0x38fb, 0x2539, 0x2840, };
+	v8u16 v_src01 = v_load(src01);
+	v8u16 v_src02 = (v8u16)__msa_shf_w((v4i32)v_src01, _MSA_SHUFFLE(3, 2, 3, 2));
+	v8u16 v_src03 = (v8u16)__msa_min_u_h(v_src01, v_src02);
+	v8u16 v_src04 = (v8u16)__msa_shf_w((v4i32)v_src03, _MSA_SHUFFLE(3, 2, 1, 1));
+	v8u16 v_src05 = (v8u16)__msa_min_u_h(v_src03, v_src04);
+	v8u16 v_src06 = (v8u16)__msa_shf_h((v8i16)v_src05, _MSA_SHUFFLE(3, 2, 1, 1));
+	v8u16 v_src07 = (v8u16)__msa_min_u_h(v_src05, v_src06);
+	unsigned short dst01 = __msa_copy_u_h((v8i16)v_src07, 0);
+	dumpVector(v_src01);
+	dumpVector(v_src03);
+	dumpVector(v_src05);
+	dumpVector(v_src07);
+	std::cout << dst01 << std::endl;
+
+	v8i16 v_src11 = v_load((short*)src01);
+	v8i16 v_src12 = (v8i16)__msa_shf_w((v4i32)v_src11, _MSA_SHUFFLE(3, 2, 3, 2));
+	v8i16 v_src13 = (v8i16)__msa_min_s_h(v_src11, v_src12);
+	v8i16 v_src14 = (v8i16)__msa_shf_w((v4i32)v_src13, _MSA_SHUFFLE(3, 2, 1, 1));
+	v8i16 v_src15 = (v8i16)__msa_min_s_h(v_src13, v_src14);
+	v8i16 v_src16 = (v8i16)__msa_shf_h((v8i16)v_src15, _MSA_SHUFFLE(3, 2, 1, 1));
+	v8i16 v_src17 = (v8i16)__msa_min_s_h(v_src15, v_src16);
+	short dst11 = __msa_copy_s_h((v8i16)v_src17, 0);
+	dumpVector(v_src11);
+	dumpVector(v_src13);
+	dumpVector(v_src15);
+	dumpVector(v_src17);
+	std::cout << dst11 << std::endl;
+
+	unsigned int src21[] = {0x18e5ed06, 0xee8afc87, 0x7d3e38fb, 0x25392840, };
+	v4u32 v_src21 = v_load(src21);
+	v4u32 v_src22 = (v4u32)__msa_shf_w((v4i32)v_src21, _MSA_SHUFFLE(3, 2, 3, 2));
+	v4u32 v_src23 = (v4u32)__msa_min_u_w(v_src21, v_src22);
+	v4u32 v_src24 = (v4u32)__msa_shf_w((v4i32)v_src21, _MSA_SHUFFLE(3, 2, 1, 1));
+	v4u32 v_src25 = (v4u32)__msa_min_u_w(v_src23, v_src24);
+	unsigned int dst21 = __msa_copy_u_w((v4i32)v_src25, 0);
+	dumpVector(v_src21);
+	dumpVector(v_src23);
+	dumpVector(v_src25);
+	std::cout << dst21 << std::endl;
+
+	v4i32 v_src31 = v_load((int*)src21);
+	v4i32 v_src32 = (v4i32)__msa_shf_w(v_src31, _MSA_SHUFFLE(3, 2, 3, 2));
+	v4i32 v_src33 = (v4i32)__msa_min_s_w(v_src31, v_src32);
+	v4i32 v_src34 = (v4i32)__msa_shf_w(v_src33, _MSA_SHUFFLE(3, 2, 1, 1));
+	v4i32 v_src35 = (v4i32)__msa_min_s_w(v_src33, v_src34);
+	int dst31 = __msa_copy_s_w(v_src35, 0);
+	dumpVector(v_src31);
+	dumpVector(v_src33);
+	dumpVector(v_src35);
+	std::cout << dst31 << std::endl;
+
+	float src41[] = {-1.f, 0.f, 1.f, 2.f};
+	v4f32 v_src41 = v_load(src41);
+	v4f32 v_src42 = (v4f32)__msa_shf_w((v4i32)v_src41, _MSA_SHUFFLE(3, 2, 3, 2));
+	v4f32 v_src43 = (v4f32)__msa_fmin_w(v_src41, v_src42);
+	v4f32 v_src44 = (v4f32)__msa_shf_w((v4i32)v_src43, _MSA_SHUFFLE(3, 2, 1, 1));
+	v4f32 v_src45 = (v4f32)__msa_fmin_w(v_src43, v_src44);
+	unsigned int dst41 = __msa_copy_u_w((v4i32)v_src45, 0);
+	dumpVector(v_src41);
+	dumpVector(v_src43);
+	dumpVector(v_src45);
+	std::cout << std::hex << "0x" << dst41 << std::endl;
+}
+
 int main(int argc, char**argv)
 {
 	std::cout << "======== v_pack ========" << std::endl;
@@ -620,6 +776,15 @@ int main(int argc, char**argv)
 
 	std::cout << "======== v_muladd ========" << std::endl;
 	v_muladd();
+
+	std::cout << "======== v_reduce_sum ========" << std::endl;
+	v_reduce_sum();
+
+	std::cout << "======== v_reduce_max ========" << std::endl;
+	v_reduce_max();
+
+	std::cout << "======== v_reduce_min ========" << std::endl;
+	v_reduce_min();
 
 	return 0;
 }
